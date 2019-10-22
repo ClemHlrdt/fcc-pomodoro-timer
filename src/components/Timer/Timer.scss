@@ -1,0 +1,20 @@
+// set positioning to relative for absolute elements
+.wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.counter {
+    position: absolute;
+    z-index: 2;
+    font-size: 2rem;
+}
+
+.spinner {
+    //position: absolute;
+    z-index: 1;
+}
