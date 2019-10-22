@@ -1,13 +1,16 @@
 import React from 'react';
 import './Progress.scss';
 
-const Progress = () => {
+const Progress = (props) => {
+    const progress = props.progress;
     return (
-        <div className="wrapperDots">
-            <span className="dot completed"></span>
-            <span className="dot"></span>
-            <span className="dot"></span>
-            <span className="dot"></span> 
+        <div>
+            {
+                progress.map((item, index) => (
+                    <span key={index} className={`dot ${progress[index] ? 'completed' : ''}`}></span>
+                ))
+            }
+            
         </div>
     );
 }
