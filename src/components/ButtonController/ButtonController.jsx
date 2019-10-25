@@ -1,31 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ButtonController.scss';
 import Button from '../Button/Button';
 
-function ButtonController(props){
-    const [value, setValue] = useState(props.time);
-
-    function handleClick(type){
-        if(type === 'increment'){
-            setValue(value+1);
-        } 
-        if (type === 'decrement'){
-            if(value > 0){
-                setValue(value-1);
-            }
-        }
-    }
-    
+function ButtonController(props) {
     return (
         <div className="ButtonController">
-                <Button type="decrement" actionClick={handleClick} className="controlButton">-</Button>
-                <div className="wrapperDisplay">
-                    <span className="label">{props.label}</span>
-                    <span className="time">{props.value/60} {value > 0 ? 'mins' : 'min'}</span>
-                </div>
-                <Button type="increment" actionClick={handleClick} className="controlButton">+</Button>
+            <Button type="reset" actionClick={type => props.handleClick(type)}>
+                <i className="fas fa-undo-alt"></i>
+            </Button>
+            <Button type="play" actionClick={type => props.handleClick(type)}>
+                <i className="fas fa-play"></i>
+            </Button>
         </div>
     )
-};
+}
 
 export default ButtonController;
