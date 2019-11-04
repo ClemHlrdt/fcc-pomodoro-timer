@@ -14,6 +14,10 @@ function ButtonController(props){
         props.updateTimer(props.type, value);
     };
 
+    useEffect(() => {
+        setValue(props.time)
+    }, [props.time])
+
     return (
         <div className="ButtonController">
                 <Button buttonId={props.label === 'Session' ? 'session-decrement' : 'break-decrement'} type="decrement" actionClick={(type) => changeValue(value, type)} className="controlButton">-</Button>
