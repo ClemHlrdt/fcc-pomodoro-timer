@@ -7,80 +7,100 @@ import TimeController from '../TimeController/TimeController';
 import ButtonController from '../ButtonController/ButtonController';
 
 function Pomodoro() {
-   
-    const [progress, setProgress] = useState([true, false, false, false]);
-    const [currentProgress, setCurrentProgress] = useState(0);
-    const [time, setTime] = useState(1500);
-    const [breakTime, setBreakTime] = useState(300);
-    const [isRunning, setIsRunning] = useState(false);
+    // default times
+    const defaultSession = {name: 'session', seconds: 1500, startingValue: 1500};
+    const defaultBreak = {name: 'break', seconds: 300, startingValue: 300};
 
-    function startTimer(time){
-        let currentValue=time;
-        let countdown = setInterval(function(){
-                setTime(currentValue-=1);
-            }, 1000);
-        if(currentValue > 0){
-            countdown();
-        } else {
-            clearInterval(countdown);
-        }
-        console.log(currentValue)
+    // session progress
+    const [sessionProgress, setSessionProgress] = useState([false, false, false, false]);
+    
+    // timer settings
+    const [isBreak, setIsBreak] = useState(false);
+    const [isStopped, setIsStopped] = useState(true);
+    
+
+    const [time, setTime] = useState(defaultSession);
+    const [breakTime, setBreakTime] = useState(defaultBreak);
+    let [currentTimer, setCurrentTimer] = useState(defaultSession);
+
+    // when clicked, toggle isStopped
+    function startPauseTimer(){
+        setIsStopped(!isStopped);  
     }
 
-    function resetTimer(time){
-        setTime(time);
+    function resetTimer(){
+        setIsStopped(true);
+        setTime(defaultSession);
+        setBreakTime(defaultBreak);
+        if(currentTimer.name === 'session'){
+            setCurrentTimer(time)
+        } else {
+            setCurrentTimer(breakTime);
+        }
     }
 
     function updateTimer(timer, value){
-        console.log('called', timer, value);
         switch (timer) {
             case 'time':
-                setTime(value);
+                setTime({...time, seconds: value, startingValue: value});
                 break;
             case 'breakTime':
-                setBreakTime(value);
+                setBreakTime({...time, seconds: value, startingValue: value});
                 break;
             default:
                 break;
         }
     }
 
-    function formatTime(time){
-        let minutes = Math.floor(time / 60).toString();
-        let seconds = (time - minutes * 60).toString();
-        if(seconds.length === 1){
-            seconds = "0"+seconds
-        }
-        return `${minutes}:${seconds}`
-    }
-
     function clickButtonHandler(type){
-        if(type === 'play'){
-            console.log('play', time)
-            startTimer(time);
-        }
-        if(type === 'reset'){
-            resetTimer(time);
-        }
+        type === 'play' ? startPauseTimer() : resetTimer();
     }
-    useEffect(() => {
-        document.title = `${currentProgress}%`;
-    }, [currentProgress]);
 
-    
+    useEffect(() => {
+        if(!isStopped  && currentTimer.seconds > 0){
+                const interval = setInterval(() => {
+                    setCurrentTimer({...currentTimer, seconds: currentTimer.seconds -1});
+                }, 1000);
+                return () => clearInterval(interval);
+        } else if(currentTimer.seconds <= 0){
+            setIsBreak(!isBreak);
+        }
+    }, [breakTime, currentTimer, isBreak, isStopped, time]);
+
+    useEffect(() => {
+        isBreak ? setCurrentTimer(breakTime) : setCurrentTimer(time)
+    }, [breakTime, isBreak, time])
+
+    useEffect(() => {
+        document.title = `${currentTimer.name}`;
+    }, [currentTimer.name]);
+
      return (
         <div className="pomodoro">
             <Title title="Pomodoro Timer" />
-            <Timer progress={currentProgress} time={formatTime(time)}/>
-            <Progress progress={progress}/>
-            <TimeController type="time" updateTimer={updateTimer} label={"Session"} time={time}/>
-            <TimeController type="breakTime" updateTimer={updateTimer} label={"Break"} time={breakTime}/>
-            <ButtonController handleClick={type => clickButtonHandler(type)}/>
-            
-            {/* //TODO create & add timer component
-            //TODO create & add timer
-            //TODO add title component
-            //TODO create & add reset & play / pause components */}
+            <Timer 
+                time={currentTimer}
+            />
+            <Progress progress={sessionProgress}/>
+            <TimeController 
+                durationId={time} 
+                labelId="session-label" 
+                type="time" 
+                lengthId="session-length"
+                updateTimer={updateTimer} 
+                label={"Session"} 
+                time={time.seconds}
+            />
+            <TimeController 
+                durationId={breakTime} 
+                labelId="break-label" 
+                lengthId="break-length"
+                type="breakTime" 
+                updateTimer={updateTimer} 
+                label={"Break"}   
+                time={breakTime.seconds} 
+            />
+            <ButtonController playing={isStopped} handleClick={type => clickButtonHandler(type)}/>
         </div>
             
     );

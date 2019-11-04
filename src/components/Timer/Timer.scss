@@ -12,9 +12,16 @@
     position: absolute;
     z-index: 2;
     font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .spinner {
-    //position: absolute;
     z-index: 1;
+}
+
+.counterType {
+    font-size: 1rem;
 }
