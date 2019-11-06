@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './TimeController.scss';
 import Button from '../Button/Button';
 
-function ButtonController(props){
+function TimeController(props){
     const [value, setValue] = useState(props.time);
     const changeValue = (value, operator) => {
         if(operator === 'increment' && value < 3600){
@@ -19,7 +19,7 @@ function ButtonController(props){
     }, [props.time])
 
     return (
-        <div className="ButtonController">
+        <div className="TimeController">
                 <Button buttonId={props.label === 'Session' ? 'session-decrement' : 'break-decrement'} type="decrement" actionClick={(type) => changeValue(value, type)} className="controlButton">-</Button>
                 <div className="wrapperDisplay">
                     <span id={props.labelId} className="label">{props.label}</span>
@@ -30,4 +30,4 @@ function ButtonController(props){
     )
 };
 
-export default ButtonController;
+export default TimeController;
