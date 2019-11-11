@@ -6,28 +6,48 @@ import { TimeContext } from '../../TimeContext';
 function TimeController(props) {
     const [timer, setTimer] = useContext(TimeContext);
 
-    // update session time / break time on click 
+    // update session time / break time on click
     const changeTimer = operator => {
-        const mode = timer.mode;
-        if (operator === 'decrement' && timer[props.type] > 60) {
-            setTimer({ 
-                ...timer, 
-                [props.type]: timer[props.type] - 60,
-                time: {
-                    currentTime: timer[timer.mode]-60,
-                    startingTime: timer[timer.mode]-60
-                }
-            });
-        }
-        if (operator === 'increment' && timer[props.type] < 3600) {
-            setTimer({
-                ...timer,
-                [props.type]: timer[props.type] + 60,
-                time: {
-                    currentTime: timer[timer.mode]+60,
-                    startingTime: timer[timer.mode]+60
-                }
-            });
+        let mode = timer.mode;
+        if (timer.mode === props.type) {
+            if (operator === 'decrement' && timer[props.type] > 60) {
+                //if the current mode && the type are equal change the currentTime & startingTime
+                setTimer({
+                    ...timer,
+                    [props.type]: timer[props.type] - 60, // change session / break time
+                    time: {
+                        currentTime: timer[timer.mode] - 60,
+                        startingTime: timer[timer.mode] - 60
+                    }
+                });
+            }
+            if (operator === 'increment' && timer[props.type] < 3600) {
+                setTimer({
+                    ...timer,
+                    [props.type]: timer[props.type] + 60,
+                    time: {
+                        currentTime: timer[timer.mode] + 60,
+                        startingTime: timer[timer.mode] + 60
+                    }
+                });
+            }
+        } else {
+            let time = timer.time;
+            if (operator === 'decrement' && timer[props.type] > 60) {
+                //if the current mode && the type are equal change the currentTime & startingTime
+                setTimer({
+                    ...timer,
+                    [props.type]: timer[props.type] - 60, // change session / break time
+                    time: time
+                });
+            }
+            if (operator === 'increment' && timer[props.type] < 3600) {
+                setTimer({
+                    ...timer,
+                    [props.type]: timer[props.type] + 60,
+                    time: time
+                });
+            }
         }
     };
 
