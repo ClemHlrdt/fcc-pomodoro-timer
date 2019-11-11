@@ -8,7 +8,6 @@ function TimeController(props) {
 
     // update session time / break time on click
     const changeTimer = operator => {
-        let mode = timer.mode;
         if (timer.mode === props.type) {
             if (operator === 'decrement' && timer[props.type] > 60) {
                 //if the current mode && the type are equal change the currentTime & startingTime
