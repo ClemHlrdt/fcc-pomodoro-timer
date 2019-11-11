@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useEffect, useContext, useRef} from 'react';
 import './Pomodoro.scss';
 import Title from '../Title/Title';
 import Timer from '../Timer/Timer';
@@ -9,106 +9,89 @@ import { TimeContext } from '../../TimeContext';
 
 function Pomodoro() {
     
-    const value = useContext(TimeContext)
-    // default times
-    const defaultSession = {name: 'session', seconds: 1500, startingValue: 1500};
-    const defaultBreak = {name: 'break', seconds: 300, startingValue: 300};
-
-    // session progress
-    const [sessionProgress, setSessionProgress] = useState([false, false, false, false]);
+    const [timer, setTimer] = useContext(TimeContext);
+    // create ref for the audio
+    const beep = useRef();
     
-    // timer settings
-    const [isBreak, setIsBreak] = useState(false);
-    const [isStopped, setIsStopped] = useState(true);
-    
-
-    const [time, setTime] = useState(defaultSession);
-    const [breakTime, setBreakTime] = useState(defaultBreak);
-    let [currentTimer, setCurrentTimer] = useState(defaultSession);
-
-    // when clicked, toggle isStopped
-    function startPauseTimer(){
-        setIsStopped(!isStopped);  
-    }
-
-    function resetTimer(){
-        setIsStopped(true);
-        setTime(defaultSession);
-        setBreakTime(defaultBreak);
-        if(currentTimer.name === 'session'){
-            setCurrentTimer(time)
-        } else {
-            setCurrentTimer(breakTime);
-        }
-    }
-
-    function updateTimer(timer, value){
-        switch (timer) {
-            case 'time':
-                setTime({...time, seconds: value, startingValue: value});
-                break;
-            case 'breakTime':
-                setBreakTime({...time, seconds: value, startingValue: value});
-                break;
-            default:
-                break;
-        }
-    }
-
-    function clickButtonHandler(type){
-        type === 'play' ? startPauseTimer() : resetTimer();
-    }
 
     useEffect(() => {
-        if(!isStopped  && currentTimer.seconds > 0){
+        if(timer.active  && timer.time.currentTime > 0){
                 const interval = setInterval(() => {
-                    setCurrentTimer({...currentTimer, seconds: currentTimer.seconds -1});
+                    setTimer({
+                        ...timer, 
+                        time: {
+                            startingTime: timer.time.startingTime,
+                            currentTime: timer.time.currentTime-1
+                    }});
                 }, 1000);
                 return () => clearInterval(interval);
-        } else if(currentTimer.seconds === 0){
-            if(currentTimer.name === 'session'){
-                setCurrentTimer(breakTime);
-            } else {
-                setCurrentTimer(time);
-            }
-        }
-    }, [breakTime, currentTimer, isBreak, isStopped, time]);
+        } else if (timer.time.currentTime === 0) {
+                beep.current.play();
+                beep.current.currentTime = 0;
+                //    setTimeout(() => {
+                       if (timer.mode === 'session') {
+                           setTimer({
+                               ...timer,
+                               time: {
+                                   currentTime: timer.break,
+                                   startingTime: timer.break
+                               },
+                               mode: 'break',
+                           });
+                       }
+                       if (timer.mode === 'break') {
+                           setTimer({
+                               ...timer,
+                               time: {
+                                   currentTime: timer.session,
+                                   startingTime: timer.session
+                               },
+                               mode: 'session',
+                               progress: timer.progress+1,
+                           });
+                       }
+                //    }, 2500);
+                   
+               }
+    }, [setTimer, timer]);
 
     useEffect(() => {
-        isBreak ? setCurrentTimer(breakTime) : setCurrentTimer(time);
-    }, [breakTime, isBreak, time]);
-    
+        if(timer.playPause){
+            beep.current.pause();
+            beep.current.currentTime = 0;
+        }
+    })
 
      return (
-        <div className="pomodoro">
-            {value}
-            <Title title="Pomodoro Timer" />
-            <Timer 
-                time={currentTimer}
-            />
-            <Progress progress={sessionProgress}/>
-            <TimeController 
-                durationId={time} 
-                labelId="session-label" 
-                type="time" 
-                lengthId="session-length"
-                updateTimer={updateTimer} 
-                label={"Session"} 
-                time={time.seconds}
-            />
-            <TimeController 
-                durationId={breakTime} 
-                labelId="break-label" 
-                lengthId="break-length"
-                type="breakTime" 
-                updateTimer={updateTimer} 
-                label={"Break"}   
-                time={breakTime.seconds} 
-            />
-            <ButtonController playing={isStopped} handleClick={type => clickButtonHandler(type)}/>
-        </div>
-            
-    );
+         <div className="pomodoro">
+             <Title title={timer.name} />
+             <Timer time={timer.time} mode={timer.mode} />
+
+             <Progress progress={timer.progress} />
+
+             <TimeController
+                 durationId={timer.session}
+                 type="session"
+                 label={'Session'}
+                 lengthId={'session-length'}
+                 labelId={'session-label'}
+             />
+             <TimeController
+                 durationId={timer.break}
+                 type="break"
+                 label={'Break'}
+                 lengthId={'break-length'}
+                 labelId={'break-label'}
+             />
+             <ButtonController playing={timer.active} myRef={beep}/>
+             <audio
+                 id="beep"
+                 preload="auto"
+                 src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"
+                 ref={beep}
+             ></audio>
+         </div>
+     );
 }
 
 export default Pomodoro;

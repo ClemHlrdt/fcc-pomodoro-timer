@@ -6,7 +6,6 @@ import { TimeProvider } from './TimeContext';
 
 
 function App() {
-  
   return (
       <TimeProvider>
           <div className="App">

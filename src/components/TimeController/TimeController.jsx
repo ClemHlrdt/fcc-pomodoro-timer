@@ -1,33 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import './TimeController.scss';
 import Button from '../Button/Button';
+import { TimeContext } from '../../TimeContext';
 
-function TimeController(props){
-    const [value, setValue] = useState(props.time);
-    const changeValue = (value, operator) => {
-        if(operator === 'increment' && value < 3600){
-            value += 60;
-        } else if(operator === 'decrement' && value > 60) {
-            value -= 60;
+function TimeController(props) {
+    const [timer, setTimer] = useContext(TimeContext);
+
+    // update session time / break time on click 
+    const changeTimer = operator => {
+        const mode = timer.mode;
+        if (operator === 'decrement' && timer[props.type] > 60) {
+            setTimer({ 
+                ...timer, 
+                [props.type]: timer[props.type] - 60,
+                time: {
+                    currentTime: timer[timer.mode]-60,
+                    startingTime: timer[timer.mode]-60
+                }
+            });
         }
-        setValue(value);
-        props.updateTimer(props.type, value);
+        if (operator === 'increment' && timer[props.type] < 3600) {
+            setTimer({
+                ...timer,
+                [props.type]: timer[props.type] + 60,
+                time: {
+                    currentTime: timer[timer.mode]+60,
+                    startingTime: timer[timer.mode]+60
+                }
+            });
+        }
     };
-
-    useEffect(() => {
-        setValue(props.time)
-    }, [props.time])
 
     return (
         <div className="TimeController">
-                <Button buttonId={props.label === 'Session' ? 'session-decrement' : 'break-decrement'} type="decrement" actionClick={(type) => changeValue(value, type)} className="controlButton">-</Button>
-                <div className="wrapperDisplay">
-                    <span id={props.labelId} className="label">{props.label}</span>
-                    <span id={props.lengthId} className="time">{value/60}</span>
-                </div>
-                <Button buttonId={props.label === 'Session' ? 'session-increment' : 'break-increment'} type="increment" actionClick={(type) => changeValue(value, type)} className="controlButton">+</Button>
+            <Button
+                actionClick={() => changeTimer('decrement')}
+                className="controlButton"
+                buttonId={`${props.type}-decrement`}
+            >
+                -
+            </Button>
+            <div className="wrapperDisplay">
+                <span id={props.labelId} className="label">
+                    {props.label}
+                </span>
+                <span id={props.lengthId} className="time">
+                    {timer[props.type] / 60}
+                </span>
+            </div>
+            <Button
+                actionClick={() => changeTimer('increment')}
+                className="controlButton"
+                buttonId={`${props.type}-increment`}
+            >
+                +
+            </Button>
         </div>
-    )
-};
+    );
+}
 
 export default TimeController;
