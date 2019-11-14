@@ -5,7 +5,7 @@
   top: 0;
   right: 0;
   padding: 20px;
-  transition: 400ms;
+  transition: transform 400ms;
   font-size: 2rem;
   z-index: 4;
   color: $black;
@@ -29,7 +29,7 @@
   align-items: center;
   justify-content: space-around;
   box-sizing: border-box;
-  //transition: 1s;
+  transition: background 1s, color 1s;
 
   &-light {
     background: $white;
