@@ -1,33 +1,35 @@
+@import "../../scss/main.scss";
+
 // set positioning to relative for absolute elements
 .wrapper {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .counter {
-    position: absolute;
-    z-index: 2;
-    font-size: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  z-index: 2;
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .spinner {
-    z-index: 1;
-    width: 100%;
-    height: 100%;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
 }
 
 .counterType {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 #time-left {
-    font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }

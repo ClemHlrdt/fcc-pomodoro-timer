@@ -10,7 +10,8 @@ export const TimeProvider = props => {
         time: { currentTime: 1500, startingTime: 1500 },
         active: false,
         name: 'Pomodoro Timer',
-        progress: 0
+        progress: 0,
+        showModal: false
     });
 
     return (

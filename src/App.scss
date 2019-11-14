@@ -1,45 +1,46 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway:400,500&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Open+Sans|Raleway:400,500&display=swap");
+@import "./scss/main.scss";
 
 :root,
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    background-image: linear-gradient(-137deg, #adbcc4 0%, #696d89 100%);
-    font-family: 'Raleway', sans-serif;
-    font-size: 1.5rem;
-    color: #dcdeed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: linear-gradient(-137deg, $grey 0%, $light-purple 100%);
+  font-family: "Raleway", sans-serif;
+  font-size: 1.5rem;
+  color: $light-grey;
 }
 
 .App {
-    width: 350px;
-    height: 600px;
-    border-radius: 6px;
-    background: #34394c;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  width: 350px;
+  height: 600px;
+  border-radius: 6px;
+  background: $black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 499px) {
-    .App {
-        height: 100%;
-        width: 100vw;
-        border-radius: 0;
-    }
+  .App {
+    height: 100%;
+    width: 100vw;
+    border-radius: 0;
+  }
 
-    body {
-        background: #34394c;
-        touch-action: manipulation;
-    }
+  body {
+    background: $black;
+    touch-action: manipulation;
+  }
 }
