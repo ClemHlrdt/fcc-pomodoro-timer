@@ -6,7 +6,7 @@ import Progress from '../Progress/Progress';
 import TimeController from '../TimeController/TimeController';
 import ButtonController from '../ButtonController/ButtonController';
 import Modal from "../Modal/Modal";
-import ModalDarkMode from "../ModalDarkMode/ModalDarkMode";
+import ModalLightMode from "../ModalLightMode/ModalLightMode";
 import { TimeContext } from '../../TimeContext';
 
 function Pomodoro() {
@@ -68,10 +68,10 @@ function Pomodoro() {
     });
 
     return (
-      <div className="pomodoro">
+      <div className={timer.isLight ? 'pomodoro pomodoro-light': 'pomodoro'}>
         <i onClick={() => toggleModal()} className="fas fa-cog gear"></i>
-        <Modal show={timer.showModal} >
-            <ModalDarkMode />
+        <Modal show={timer.showModal} title="Settings">
+          <ModalLightMode />
         </Modal>
         <Title title={timer.name} />
         <Timer time={timer.time} mode={timer.mode} />

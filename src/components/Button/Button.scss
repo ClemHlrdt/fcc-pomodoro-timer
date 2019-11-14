@@ -1,6 +1,6 @@
 @import "../../scss/main.scss";
 
-.Button {
+.button {
   background: $white;
   color: $black;
   width: 50px;
@@ -12,11 +12,17 @@
   align-items: center;
   border: none;
   text-decoration: none;
+  //transition: 1s;
   &:hover {
     cursor: pointer;
   }
   &:focus {
     outline: 0;
+  }
+
+  &-light {
+    background: $orange;
+    color: $white;
   }
 }
 

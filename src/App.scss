@@ -21,17 +21,6 @@ body {
   color: $light-grey;
 }
 
-.App {
-  width: 350px;
-  height: 600px;
-  border-radius: 6px;
-  background: $black;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 @media (max-width: 499px) {
   .App {
     height: 100%;

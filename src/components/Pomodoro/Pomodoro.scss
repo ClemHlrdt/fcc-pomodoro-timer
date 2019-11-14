@@ -16,17 +16,31 @@
 }
 
 .pomodoro {
-  height: 100%;
-  width: 100%;
+  width: 350px;
+  height: 600px;
+  border-radius: 6px;
+  background: $black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   box-sizing: border-box;
+  //transition: 1s;
+
+  &-light {
+    background: $white;
+    color: $black;
+  }
 }
 
 @media (max-width: 499px) {
   .pomodoro {
     height: 100%;
+    width: 100vw;
+    border-radius: 0;
   }
 }

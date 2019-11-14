@@ -11,7 +11,8 @@ export const TimeProvider = props => {
         active: false,
         name: 'Pomodoro Timer',
         progress: 0,
-        showModal: false
+        showModal: false,
+        isLight: false
     });
 
     return (

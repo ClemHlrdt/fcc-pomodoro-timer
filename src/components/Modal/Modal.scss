@@ -24,24 +24,12 @@
   color: $black;
   margin: auto;
   padding: 0;
-  width: 80%;
+  width: 60%;
   box-shadow: 0 4px 8px 0 rgba($black, 0.2), 0 6px 20px 0 rgba($black, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
   animation-duration: 0.4s;
-}
-
-/* Add Animation */
-@-webkit-keyframes animatetop {
-  from {
-    top: -300px;
-    opacity: 0;
-  }
-  to {
-    top: 0;
-    opacity: 1;
-  }
 }
 
 @keyframes animatetop {
@@ -57,15 +45,20 @@
 
 /* The Close Button */
 .close {
-  color: white;
-  float: right;
+  color: $white;
+  position: absolute;
+  top: 5px;
+  right: 5px;
   font-size: 28px;
   font-weight: bold;
+  width: 30px;
+  height: 30px;
+  text-align: center;
 }
 
 .close:hover,
 .close:focus {
-  color: $black;
+  color: $white;
   text-decoration: none;
   cursor: pointer;
 }
@@ -78,6 +71,8 @@
 
 .modal-body {
   padding: 2px 16px;
+  display: flex;
+  justify-content: center;
 }
 
 .modal-footer {
