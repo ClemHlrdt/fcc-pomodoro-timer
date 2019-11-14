@@ -16,7 +16,7 @@ const Modal = props => {
       <div className="modal-content">
         <span className="close">&times;</span>
         <div className="modal-header">
-          <h2>{props.title}</h2>
+          <h3>{props.title}</h3>
         </div>
         <div className="modal-body">{props.children}</div>
       </div>
