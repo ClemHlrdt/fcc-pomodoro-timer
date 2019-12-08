@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { TimeContext } from '../../TimeContext';
+import { TimeContext } from "../../TimeContext";
 import "./Modal.scss";
 
 const Modal = props => {
   const showHideClassName = props.show ? "modal-show" : "modal-hide";
   const [timer, setTimer] = useContext(TimeContext);
-  function toggleModal(){
+  function toggleModal() {
     setTimer({
       ...timer,
       showModal: !timer.showModal
